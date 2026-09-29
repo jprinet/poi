@@ -29,6 +29,10 @@ jobs:
         java: [ 17, 21 ]
 
     name: Java ${{ matrix.java }} build
+
+    env:
+      DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+
     steps:
     - uses: actions/checkout@v7
 
