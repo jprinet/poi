@@ -1,3 +1,30 @@
+plugins {
+    id 'com.gradle.develocity' version '4.6.0'
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '2.8.0'
+}
+
+def isCI = System.getenv('GITHUB_ACTIONS') != null
+def accessKey = System.getenv('DEVELOCITY_ACCESS_KEY')
+
+develocity {
+    server = 'https://develocity.example.ai'
+
+    buildScan {
+        uploadInBackground = !isCI
+    }
+}
+
+buildCache {
+    local {
+        enabled = true
+    }
+
+    remote(develocity.buildCache) {
+        enabled = true
+        push = isCI && accessKey != null && !accessKey.isEmpty()
+    }
+}
+
 rootProject.name = 'poi'
 
 include 'poi', 'poi-ooxml-full', 'poi-ooxml-lite-agent', 'poi-scratchpad',
